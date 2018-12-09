@@ -56,3 +56,16 @@ exports.stopBufferSource = function(when) {
     };
   };
 };
+
+exports.detune = function(src) {
+  return function() {
+    return src.detune;
+  };
+};
+
+exports.playbackRate = function(src) {
+  return function() {
+    return src.playbackRate;
+  };
+};
+
