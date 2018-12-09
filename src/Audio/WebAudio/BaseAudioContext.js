@@ -132,6 +132,12 @@ exports.createConvolver = function(ctx) {
   };
 };
 
+exports.createPanner = function(ctx) {
+  return function() {
+    return ctx.createPanner();
+  };
+};
+
 exports.newAudioContext = function() {
   return new (window.AudioContext || window.webkitAudioContext)();
 };
