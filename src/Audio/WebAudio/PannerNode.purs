@@ -3,8 +3,10 @@ module Audio.WebAudio.PannerNode
   , PanningModelType(..), panningModel, setPanningModel
   , coneInnerAngle, setConeInnerAngle, coneOuterAngle, setConeOuterAngle
   , positionX, positionY, positionZ
-  , orientationX, orientationY, orientationZ ) where
+  , orientationX, orientationY, orientationZ
+  , setPosition, setOrientation ) where
 
+import Audio.WebAudio.AudioParam (setValue)
 import Audio.WebAudio.Types (AudioParam, PannerNode)
 import Audio.WebAudio.Utils (unsafeGetProp, unsafeSetProp)
 import Effect (Effect)
@@ -73,3 +75,15 @@ foreign import positionZ :: PannerNode -> Effect AudioParam
 foreign import orientationX :: PannerNode -> Effect AudioParam
 foreign import orientationY :: PannerNode -> Effect AudioParam
 foreign import orientationZ :: PannerNode -> Effect AudioParam
+
+setPosition :: Number -> Number -> Number -> PannerNode -> Effect Unit
+setPosition x y z p = do
+  setValue x =<< positionX p
+  setValue y =<< positionY p
+  setValue z =<< positionZ p
+
+setOrientation :: Number -> Number -> Number -> PannerNode -> Effect Unit
+setOrientation x y z p = do
+  setValue x =<< orientationX p
+  setValue y =<< orientationY p
+  setValue z =<< orientationZ p
