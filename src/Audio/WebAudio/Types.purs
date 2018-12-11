@@ -5,7 +5,7 @@ module Audio.WebAudio.Types
   , GainNode, MediaElementAudioSourceNode
   , DelayNode, OscillatorNode, AnalyserNode, StereoPannerNode
   , DynamicsCompressorNode, ConvolverNode
-  , ListenerNode, PannerNode
+  , AudioListener, PannerNode
   , AudioContextState(..), AudioContextPlaybackCategory(..)
   , Value, Seconds
   , connect, disconnect, connectParam) where
@@ -28,7 +28,7 @@ foreign import data AnalyserNode :: Type
 foreign import data StereoPannerNode :: Type
 foreign import data DynamicsCompressorNode :: Type
 foreign import data ConvolverNode :: Type
-foreign import data ListenerNode :: Type
+foreign import data AudioListener :: Type
 foreign import data PannerNode :: Type
 
 -- | a 'raw' web-audio node
@@ -70,7 +70,6 @@ instance audioNodeAnalyserNode :: RawAudioNode AnalyserNode
 instance audioNodeStereoPannerNode :: RawAudioNode StereoPannerNode
 instance audioNodeDynamicsCompressorNode :: RawAudioNode DynamicsCompressorNode
 instance audioNodeDynamicsCConvolverNode :: RawAudioNode ConvolverNode
-instance audioNodeListenerNode :: RawAudioNode ListenerNode
 instance audioNodePannerNode :: RawAudioNode PannerNode
 
 -- | a web audio node that is connectable/disconnectable from another node

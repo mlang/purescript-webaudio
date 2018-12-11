@@ -13,7 +13,7 @@ module Audio.WebAudio.BaseAudioContext
 
 import Prelude
 
-import Audio.WebAudio.Types (AudioBuffer, AudioBufferSourceNode, AudioContext, DestinationNode, GainNode, ListenerNode, OscillatorNode, DelayNode, BiquadFilterNode, AnalyserNode, StereoPannerNode, DynamicsCompressorNode, ConvolverNode, PannerNode, Seconds, Value, AudioContextState(..))
+import Audio.WebAudio.Types (AudioBuffer, AudioBufferSourceNode, AudioContext, DestinationNode, GainNode, AudioListener, OscillatorNode, DelayNode, BiquadFilterNode, AnalyserNode, StereoPannerNode, DynamicsCompressorNode, ConvolverNode, PannerNode, Seconds, Value, AudioContextState(..))
 import Audio.WebAudio.Utils (unsafeGetProp)
 import Data.ArrayBuffer.Types (ArrayBuffer)
 import Effect (Effect)
@@ -33,7 +33,7 @@ destination
   -> Effect DestinationNode
 destination = unsafeGetProp "destination"
 
-listener :: AudioContext -> Effect ListenerNode
+listener :: AudioContext -> Effect AudioListener
 listener = unsafeGetProp "listener"
 
 -- | The sample rate (in sample-frames per second) at which the BaseAudioContext handles audio.
