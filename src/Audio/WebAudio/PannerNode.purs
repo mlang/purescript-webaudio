@@ -1,7 +1,12 @@
 module Audio.WebAudio.PannerNode
   ( DistanceModelType(..), distanceModel, setDistanceModel
+  , refDistance, setRefDistance
+  , maxDistance, setMaxDistance
+  , rolloffFactor, setRolloffFactor
   , PanningModelType(..), panningModel, setPanningModel
-  , coneInnerAngle, setConeInnerAngle, coneOuterAngle, setConeOuterAngle
+  , coneInnerAngle, setConeInnerAngle
+  , coneOuterAngle, setConeOuterAngle
+  , coneOuterGain, setConeOuterGain
   , positionX, positionY, positionZ
   , orientationX, orientationY, orientationZ
   , setPosition, setOrientation ) where
@@ -17,24 +22,40 @@ data DistanceModelType = Linear
                        | Exponential
 
 instance distanceModelTypeShow :: Show DistanceModelType where
-    show Linear      = "linear"
-    show Inverse     = "inverse"
-    show Exponential = "exponential"
+  show Linear      = "linear"
+  show Inverse     = "inverse"
+  show Exponential = "exponential"
 
 derive instance eqDistanceModelType :: Eq DistanceModelType
 derive instance ordDistanceModelType :: Ord DistanceModelType
 
-readDistanceModelType :: String -> DistanceModelType
-readDistanceModelType "linear"      = Linear
-readDistanceModelType "inverse"     = Inverse
-readDistanceModelType "exponential" = Exponential
-readDistanceModelType _             = Inverse
-
 distanceModel :: PannerNode -> Effect DistanceModelType
-distanceModel n = readDistanceModelType <$> unsafeGetProp "distanceModel" n
+distanceModel n = unsafeGetProp "distanceModel" n <#> case _ of
+  "linear"      -> Linear
+  "inverse"     -> Inverse
+  "exponential" -> Exponential
+  _             -> Inverse
 
 setDistanceModel :: DistanceModelType -> PannerNode -> Effect Unit
 setDistanceModel t n = unsafeSetProp "distanceModel" n (show t)
+
+refDistance :: PannerNode -> Effect Number
+refDistance n = unsafeGetProp "refDistance" n
+
+setRefDistance :: Number -> PannerNode -> Effect Unit
+setRefDistance v n = unsafeSetProp "refDistance" n v
+
+maxDistance :: PannerNode -> Effect Number
+maxDistance n = unsafeGetProp "maxDistance" n
+
+setMaxDistance :: Number -> PannerNode -> Effect Unit
+setMaxDistance v n = unsafeSetProp "maxDistance" n v
+
+rolloffFactor :: PannerNode -> Effect Number
+rolloffFactor n = unsafeGetProp "rolloffFactor" n
+
+setRolloffFactor :: Number -> PannerNode -> Effect Unit
+setRolloffFactor v n = unsafeSetProp "rolloffFactor" n v
 
 data PanningModelType = EqualPower
                       | HRTF
@@ -46,13 +67,11 @@ instance showPanningModelType :: Show PanningModelType where
 derive instance eqPanningModelType :: Eq PanningModelType
 derive instance ordPanningModelType :: Ord PanningModelType
 
-readPanningModelType :: String -> PanningModelType
-readPanningModelType "equalpower" = EqualPower
-readPanningModelType "HRTF"      = HRTF
-readPanningModelType _             = EqualPower
-
 panningModel :: PannerNode -> Effect PanningModelType
-panningModel n = readPanningModelType <$> unsafeGetProp "panningModel" n
+panningModel n = unsafeGetProp "panningModel" n <#> case _ of
+  "equalpower" -> EqualPower
+  "HRTF"       -> HRTF
+  _            -> EqualPower
 
 setPanningModel :: PanningModelType -> PannerNode -> Effect Unit
 setPanningModel t n = unsafeSetProp "panningModel" n (show t)
@@ -69,6 +88,12 @@ coneOuterAngle n = unsafeGetProp "coneOuterAngle" n
 setConeOuterAngle :: Number -> PannerNode -> Effect Unit
 setConeOuterAngle v n = unsafeSetProp "coneOuterAngle" n v
 
+coneOuterGain :: PannerNode -> Effect Number
+coneOuterGain n = unsafeGetProp "coneOuterGain" n
+
+setConeOuterGain :: Number -> PannerNode -> Effect Unit
+setConeOuterGain v n = unsafeSetProp "coneOuterGain" n v
+
 foreign import positionX :: PannerNode -> Effect AudioParam
 foreign import positionY :: PannerNode -> Effect AudioParam
 foreign import positionZ :: PannerNode -> Effect AudioParam
@@ -76,14 +101,14 @@ foreign import orientationX :: PannerNode -> Effect AudioParam
 foreign import orientationY :: PannerNode -> Effect AudioParam
 foreign import orientationZ :: PannerNode -> Effect AudioParam
 
-setPosition :: Number -> Number -> Number -> PannerNode -> Effect Unit
-setPosition x y z p = do
-  setValue x =<< positionX p
-  setValue y =<< positionY p
-  setValue z =<< positionZ p
+setPosition :: { x::Number, y::Number, z::Number } -> PannerNode -> Effect Unit
+setPosition pos panner = do
+  setValue pos.x =<< positionX panner
+  setValue pos.y =<< positionY panner
+  setValue pos.z =<< positionZ panner
 
-setOrientation :: Number -> Number -> Number -> PannerNode -> Effect Unit
-setOrientation x y z p = do
-  setValue x =<< orientationX p
-  setValue y =<< orientationY p
-  setValue z =<< orientationZ p
+setOrientation :: { x::Number, y::Number, z::Number } -> PannerNode -> Effect Unit
+setOrientation o panner = do
+  setValue o.x =<< orientationX panner
+  setValue o.y =<< orientationY panner
+  setValue o.z =<< orientationZ panner
