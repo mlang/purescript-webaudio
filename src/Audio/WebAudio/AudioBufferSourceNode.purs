@@ -1,7 +1,7 @@
 module Audio.WebAudio.AudioBufferSourceNode
   ( StartOptions, defaultStartOptions, setBuffer, startBufferSource, stopBufferSource
   , loop, setLoop, loopStart, setLoopStart, loopEnd, setLoopEnd
-  , detune, playbackRate ) where
+  , detune, playbackRate, onended ) where
 
 -- | Audio Buffer Source Node.  This is an audio source consisting of in-memory
 -- | audio data, stored in an AudioBuffer.
@@ -13,6 +13,7 @@ import Audio.WebAudio.Types (AudioBuffer, AudioBufferSourceNode, AudioParam, Sec
 import Audio.WebAudio.Utils (unsafeGetProp, unsafeSetProp)
 import Effect (Effect)
 import Data.Maybe (Maybe(..))
+import Web.Event.Event (Event)
 
 -- | A record of options to the function startBufferSource
 -- | See Webaudio API AudioBufferSourcenode.start for more information
@@ -104,3 +105,7 @@ setLoopEnd l n = unsafeSetProp "loopEnd" n l
 
 foreign import detune :: AudioBufferSourceNode -> Effect AudioParam
 foreign import playbackRate :: AudioBufferSourceNode -> Effect AudioParam
+foreign import onended
+  :: AudioBufferSourceNode
+  -> (Event -> Effect Unit) -- called by the browser when the ended event occurs
+  -> Effect Unit

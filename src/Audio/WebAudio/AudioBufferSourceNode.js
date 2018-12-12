@@ -69,3 +69,12 @@ exports.playbackRate = function(src) {
   };
 };
 
+exports.onended = function(src) {
+  return function(fn) {
+    return function() {
+      src.onended = function(event) {
+        fn(event)();
+      };
+    };
+  };
+};

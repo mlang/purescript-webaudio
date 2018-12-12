@@ -32,7 +32,8 @@
     "purescript-effect": "^2.0.0",
     "purescript-aff": "^5.0.0",
     "purescript-arraybuffer-types": "^2.0.0",
-    "purescript-arraybuffer": "^7.0.0"
+    "purescript-arraybuffer": "^7.0.0",
+    "purescript-web-events": "^1.0.1"
   },
   "devDependencies": {
     "purescript-console": "^4.0.0",
