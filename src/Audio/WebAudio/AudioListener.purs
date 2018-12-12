@@ -19,17 +19,20 @@ foreign import upX :: AudioListener -> Effect AudioParam
 foreign import upY :: AudioListener -> Effect AudioParam
 foreign import upZ :: AudioListener -> Effect AudioParam
 
-setPosition :: Number -> Number -> Number -> AudioListener -> Effect Unit
-setPosition x y z l = do
-  setValue x =<< positionX l
-  setValue y =<< positionY l
-  setValue z =<< positionZ l
+setPosition :: { x::Number, y::Number, z::Number } -> AudioListener -> Effect Unit
+setPosition pos l = do
+  setValue pos.x =<< positionX l
+  setValue pos.y =<< positionY l
+  setValue pos.z =<< positionZ l
 
-setOrientation :: Number -> Number -> Number -> Number -> Number -> Number -> AudioListener -> Effect Unit
-setOrientation fx fy fz ux uy uz l = do
-  setValue fx =<< forwardX l
-  setValue fy =<< forwardY l
-  setValue fz =<< forwardZ l
-  setValue ux =<< upX l
-  setValue uy =<< upY l
-  setValue uz =<< upZ l
+setOrientation :: { x::Number, y::Number, z::Number } -- forward
+               -> { x::Number, y::Number, z::Number } -- up
+               -> AudioListener
+               -> Effect Unit
+setOrientation fw up l = do
+  setValue fw.x =<< forwardX l
+  setValue fw.y =<< forwardY l
+  setValue fw.z =<< forwardZ l
+  setValue up.x =<< upX l
+  setValue up.y =<< upY l
+  setValue up.z =<< upZ l
