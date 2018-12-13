@@ -48,3 +48,40 @@ exports.upZ = function(listener) {
   };
 };
 
+exports.setPosition = function (pos) {
+  return function(listener) {
+    if (listener.positionX) {
+      return function() {
+        listener.positionX.value = pos.x;
+        listener.positionY.value = pos.y;
+        listener.positionZ.value = pos.z;
+      };
+    } else {
+      return function() {
+        listener.setPosition(pos.x, pos.y, pos.z);
+      };
+    }
+  };
+};
+
+exports.setOrientation = function(fw) {
+  return function(up) {
+    return function(listener) {
+      if (listener.forwardX) {
+        return function() {
+          listener.forwardX.value = fw.x;
+          listener.forwardY.value = fw.y;
+          listener.forwardZ.value = fw.z;
+          listener.upX.value = up.x;
+          listener.upY.value = up.y;
+          listener.upZ.value = up.z;
+        };
+      } else {
+        return function() {
+          listener.setOrientation(fw.x, fw.y, fw.z, up.x, up.y, up.z);
+        };
+      }
+    };
+  };
+};
+

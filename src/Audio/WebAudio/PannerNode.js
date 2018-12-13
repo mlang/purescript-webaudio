@@ -32,3 +32,35 @@ exports.orientationZ = function(listener) {
     return listener.orientationZ;
   };
 };
+
+exports.setPosition = function (pos) {
+  return function(panner) {
+    if (panner.positionX) {
+      return function() {
+        panner.positionX.value = pos.x;
+        panner.positionY.value = pos.y;
+        panner.positionZ.value = pos.z;
+      };
+    } else {
+      return function() {
+        panner.setPosition(pos.x, pos.y, pos.z);
+      };
+    }
+  };
+};
+
+exports.setOrientation = function (orientation) {
+  return function(panner) {
+    if (panner.orientationX) {
+      return function() {
+        panner.orientationX.value = orientation.x;
+        panner.orientationY.value = orientation.y;
+        panner.orientationZ.value = orientation.z;
+      };
+    } else {
+      return function() {
+        panner.setOrientation(orientation.x, orientation.y, orientation.z);
+      };
+    }
+  };
+};
