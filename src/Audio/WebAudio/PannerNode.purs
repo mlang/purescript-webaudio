@@ -11,7 +11,6 @@ module Audio.WebAudio.PannerNode
   , orientationX, orientationY, orientationZ
   , setPosition, setOrientation ) where
 
-import Audio.WebAudio.AudioParam (setValue)
 import Audio.WebAudio.Types (AudioParam, PannerNode)
 import Audio.WebAudio.Utils (unsafeGetProp, unsafeSetProp)
 import Effect (Effect)
@@ -101,14 +100,8 @@ foreign import orientationX :: PannerNode -> Effect AudioParam
 foreign import orientationY :: PannerNode -> Effect AudioParam
 foreign import orientationZ :: PannerNode -> Effect AudioParam
 
-setPosition :: { x::Number, y::Number, z::Number } -> PannerNode -> Effect Unit
-setPosition pos panner = do
-  setValue pos.x =<< positionX panner
-  setValue pos.y =<< positionY panner
-  setValue pos.z =<< positionZ panner
+foreign import setPosition
+  :: { x::Number, y::Number, z::Number } -> PannerNode -> Effect Unit
 
-setOrientation :: { x::Number, y::Number, z::Number } -> PannerNode -> Effect Unit
-setOrientation o panner = do
-  setValue o.x =<< orientationX panner
-  setValue o.y =<< orientationY panner
-  setValue o.z =<< orientationZ panner
+foreign import setOrientation
+  :: { x::Number, y::Number, z::Number } -> PannerNode -> Effect Unit
