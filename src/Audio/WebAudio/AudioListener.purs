@@ -4,8 +4,7 @@ module Audio.WebAudio.AudioListener
   , upX, upY, upZ
   , setPosition, setOrientation ) where
 
-import Prelude (Unit, discard, (=<<))
-import Audio.WebAudio.AudioParam (setValue)
+import Prelude (Unit)
 import Audio.WebAudio.Types (AudioParam, AudioListener)
 import Effect (Effect)
 
